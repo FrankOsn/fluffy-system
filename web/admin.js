@@ -13,6 +13,7 @@
   const fontCssInput = document.getElementById('fontCss');
   const fontFileInput = document.getElementById('fontFile');
   const logoFileInput = document.getElementById('logoFile');
+  const logoSizeInput = document.getElementById('logoSizeInput');
   const titulo_ptInput = document.getElementById('titulo_pt');
   const nombre_ptInput = document.getElementById('nombre_pt');
   const precio_ptInput = document.getElementById('precio_pt');
@@ -79,6 +80,14 @@
         alert(`Logo guardado para ${document.querySelector(`#sheetSelect option[value="${currentSheetId}"]`).text}`);
       };
       reader.readAsDataURL(file);
+    });
+  }
+
+  // Logo size input handler
+  if (logoSizeInput) {
+    logoSizeInput.addEventListener('change', function() {
+      saveSheetStyle();
+      renderSheet(currentIndex);
     });
   }
 
@@ -309,7 +318,8 @@
       dividercolor: dividerColorInput.value || '#D4AF37',
       itemSpacing: parseInt(itemSpacingInput.value) || 32,
       margin: parseInt(marginInput.value) || 50,
-      orientacion: orientation
+      orientacion: orientation,
+      logoSize: parseInt(logoSizeInput.value) || 80
     };
     
     // Also save orientation to hoja object
@@ -363,6 +373,7 @@
       dividerColorPicker.value = style.dividercolor || hojaDivider;
       itemSpacingInput.value = style.itemSpacing;
       marginInput.value = style.margin;
+      logoSizeInput.value = style.logoSize || 80;
       console.log('Sheet style loaded for:', sheetId);
     } else {
       // Default values from hoja
@@ -376,6 +387,8 @@
       if (orientRadio) {
         orientRadio.checked = true;
       }
+      
+      logoSizeInput.value = 80;
       
       titulo_ptInput.value = catConfig.size || 140;
       nombre_ptInput.value = 85;
@@ -579,10 +592,10 @@
 
     // Render logo if exists
     if (window.currentLogo && hoja.mostrar_logo) {
-      const logoSize = 80;
-      const logoPaddingRight = 30;
+      const logoSize = parseInt(logoSizeInput.value) || 80;
+      const logoPaddingLeft = 30;
       const logoPaddingTop = 30;
-      const logoX = canvas.width - logoSize - logoPaddingRight;
+      const logoX = logoPaddingLeft;
       const logoY = logoPaddingTop;
 
       const drawLogo = (img) => {
