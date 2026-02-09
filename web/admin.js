@@ -115,6 +115,7 @@
     radio.addEventListener('change', (e) => {
       orientation = e.target.value;
       console.log('Orientation changed to:', orientation);
+      saveSheetStyle();
       updateCanvasDimensions();
     });
   });
@@ -307,8 +308,12 @@
       textcolor: textColorInput.value || '#FFFDD0',
       dividercolor: dividerColorInput.value || '#D4AF37',
       itemSpacing: parseInt(itemSpacingInput.value) || 32,
-      margin: parseInt(marginInput.value) || 50
+      margin: parseInt(marginInput.value) || 50,
+      orientacion: orientation
     };
+    
+    // Also save orientation to hoja object
+    hoja.orientacion = orientation;
     
     console.log('Sheet style saved for:', sheetId);
   }
@@ -321,6 +326,15 @@
     
     const style = sheetStyles[sheetId];
     const hojaDivider = hoja.linea_div_color || '#D4AF37';
+    
+    // Load orientation from hoja
+    orientation = hoja.orientacion || 'landscape';
+    const orientationValue = orientation === 'landscape' ? 'landscape' : 'portrait';
+    const orientationRadio = document.querySelector(`input[name="orientation"][value="${orientationValue}"]`);
+    if (orientationRadio) {
+      orientationRadio.checked = true;
+    }
+    updateCanvasDimensions();
     
     // Load logo from localStorage if exists
     const logoData = localStorage.getItem(`logo_${sheetId}`);
@@ -354,6 +368,14 @@
       // Default values from hoja
       const catConfig = hoja.categoria_config || {};
       const unidadConfig = hoja.unidad_config || {};
+      
+      // Load orientation from hoja
+      const hojaDef = hoja.orientacion || 'landscape';
+      orientation = hojaDef;
+      const orientRadio = document.querySelector(`input[name="orientation"][value="${hojaDef}"]`);
+      if (orientRadio) {
+        orientRadio.checked = true;
+      }
       
       titulo_ptInput.value = catConfig.size || 140;
       nombre_ptInput.value = 85;
