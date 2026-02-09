@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Console</title>
+</head>
+<body>
+  <h1>Abre la Consola del Navegador (F12) para ver errores</h1>
+  <iframe src="web/admin.html" style="width: 100%; height: 90vh; border: none;"></iframe>
+  <script>
+    // Redirige console.error a una alerta
+    console.error = function(...args) {
+      console.log("ERROR:", args);
+    };
+  </script>
+</body>
+</html>

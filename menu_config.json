@@ -1,0 +1,26 @@
+{
+  "version": "0.3.1",
+  "timestamp": "2026-02-09T21:06:38.296Z",
+  "sheetStyles": {
+    "visceras_01": {
+      "categoria_pt": "118",
+      "nombre_pt": "85",
+      "precio_pt": "100",
+      "bgcolor": "#7B0000",
+      "textcolor": "#beb509",
+      "dividercolor": "#D4AF37",
+      "itemSpacing": "32",
+      "margin": "50"
+    },
+    "pescados_01": {
+      "categoria_pt": "118",
+      "nombre_pt": "85",
+      "precio_pt": "100",
+      "bgcolor": "#7B0000",
+      "textcolor": "#beb509",
+      "dividercolor": "#D4AF37",
+      "itemSpacing": "32",
+      "margin": "50"
+    }
+  }
+}
