@@ -31,6 +31,8 @@
   let fontsLoaded = false;
   let orientation = 'landscape'; // 16:9
 
+  console.log('Admin panel initialized');
+
   // Canvas dimensions based on orientation
   function getCanvasDimensions() {
     if (orientation === 'landscape') {
@@ -51,6 +53,7 @@
   orientationRadios.forEach(radio => {
     radio.addEventListener('change', (e) => {
       orientation = e.target.value;
+      console.log('Orientation changed to:', orientation);
       updateCanvasDimensions();
     });
   });
@@ -60,11 +63,12 @@
     try {
       const res = await fetch('../sample_data_complete.json');
       data = await res.json();
+      console.log('Sample data loaded:', data);
       populateSheetSelect();
       loadFont(fontCssInput.value).then(() => renderSheet(0));
     } catch (e) {
       console.error('Error loading sample:', e);
-      previewInfo.textContent = 'Error cargando datos';
+      previewInfo.textContent = 'Error cargando datos: ' + e.message;
     }
   }
 
@@ -81,6 +85,7 @@
       sheetSelect.appendChild(opt);
     });
     sheetSelect.value = 0;
+    console.log('Sheet selector populated with', data.hojas.length, 'sheets');
   }
 
   sheetSelect.addEventListener('change', (e) => {
@@ -90,7 +95,10 @@
 
   // Load fonts
   async function loadFont(url) {
-    if (!url) return;
+    if (!url) {
+      fontsLoaded = false;
+      return;
+    }
     try {
       if (url.includes('fonts.googleapis.com')) {
         const linkId = 'gf-stylesheet';
@@ -103,6 +111,7 @@
         }
         await document.fonts.ready;
         fontsLoaded = true;
+        console.log('Google Fonts loaded');
         if (data) renderSheet(currentIndex);
         return;
       }
@@ -110,9 +119,11 @@
       await font.load();
       document.fonts.add(font);
       fontsLoaded = true;
+      console.log('Custom font loaded from URL');
       if (data) renderSheet(currentIndex);
     } catch (e) {
       console.warn('Font load error:', e);
+      fontsLoaded = false;
     }
   }
 
@@ -127,9 +138,11 @@
       await font.load();
       document.fonts.add(font);
       fontsLoaded = true;
+      console.log('Local font file loaded');
       if (data) renderSheet(currentIndex);
     } catch (e) {
       console.warn('Local font error:', e);
+      fontsLoaded = false;
     }
   });
 
@@ -142,14 +155,18 @@
       populateSheetSelect();
       currentIndex = 0;
       renderSheet(0);
+      console.log('Custom JSON file loaded');
     } catch (e) {
-      alert('JSON inválido');
+      alert('JSON inválido: ' + e.message);
     }
   });
 
   // Render function
   function renderSheet(index) {
-    if (!data || !data.hojas) return;
+    if (!data || !data.hojas) {
+      previewInfo.textContent = 'No data loaded';
+      return;
+    }
 
     currentIndex = index % data.hojas.length;
     const hoja = data.hojas[currentIndex];
@@ -298,7 +315,7 @@
     });
 
     // Update info
-    previewInfo.textContent = `${hoja.nombre} (${orientation === 'landscape' ? '16:9' : '9:16'}) - ${items.length} items`;
+    previewInfo.textContent = `${hoja.nombre} (${orientation === 'landscape' ? '1280×720' : '720×1280'}) - ${items.length} items`;
   }
 
   // Input change listeners for live update
@@ -316,12 +333,14 @@
       sheetSelect.value = currentIndex;
       renderSheet(currentIndex);
     }, seconds * 1000);
+    console.log('Rotation started:', seconds, 'seconds');
   }
 
   function stopRotation() {
     if (rotTimer) {
       clearInterval(rotTimer);
       rotTimer = null;
+      console.log('Rotation stopped');
     }
   }
 
@@ -341,18 +360,26 @@
   exportPNGBtn.addEventListener('click', () => {
     const uri = canvas.toDataURL('image/png');
     downloadURI(uri, `menu_${currentIndex + 1}.png`);
+    console.log('PNG exported');
   });
 
   exportPDFBtn.addEventListener('click', async () => {
-    const uri = canvas.toDataURL('image/png');
-    const { jsPDF } = window.jspdf;
-    const dims = getCanvasDimensions();
-    const pdf = new jsPDF({ orientation: orientation === 'landscape' ? 'l' : 'p', unit: 'px', format: [dims.width, dims.height] });
-    pdf.addImage(uri, 'PNG', 0, 0, dims.width, dims.height);
-    pdf.save(`menu_${currentIndex + 1}.pdf`);
+    try {
+      const uri = canvas.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      const dims = getCanvasDimensions();
+      const pdf = new jsPDF({ orientation: orientation === 'landscape' ? 'l' : 'p', unit: 'px', format: [dims.width, dims.height] });
+      pdf.addImage(uri, 'PNG', 0, 0, dims.width, dims.height);
+      pdf.save(`menu_${currentIndex + 1}.pdf`);
+      console.log('PDF exported');
+    } catch (e) {
+      console.error('PDF export error:', e);
+      alert('Error exporting PDF: ' + e.message);
+    }
   });
 
   // Init
+  console.log('Initializing with landscape orientation');
   updateCanvasDimensions();
   loadSample();
 
