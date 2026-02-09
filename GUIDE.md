@@ -1,60 +1,95 @@
-# Guía de Uso — Generador de Menús Dinámicos
+# Guía de Uso — Generador de Menús Dinámicos v0.3.2
 
-## Inicio rápido
+## 🚀 Inicio Rápido
 
-1. **Inicia el servidor**:
-   ```bash
-   cd /Users/franciscoosnaya/Documents/CARNICERIA/fluffy-system
-   python3 -m http.server 8000
-   ```
+### 1. **Acceder a la aplicación**
 
-2. **Abre en tu navegador**:
-   - http://localhost:8000/web/index.html
+**Opción A - Local (desarrollo)**:
+```bash
+cd /Users/franciscoosnaya/Documents/CARNICERIA/fluffy-system
+python3 -m http.server 8000
+```
+Luego abre: `http://localhost:8000/web/admin.html`
 
-3. **Cargar datos**:
-   - Por defecto carga `sample_data.json`.
-   - O arrastra un JSON propio en el input "Archivo JSON" del panel.
+**Opción B - GitHub Pages (producción)**:
+```
+https://FrankOsn.github.io/fluffy-system/web/admin.html
+```
 
-4. **Configurar fuentes** (opcional):
-   - **Google Fonts CSS**: Pre-llenado con Roboto. Cambia la URL si quieres otra familia.
-   - **Local .ttf/.woff/.woff2**: Sube un archivo de tu computadora.
+### 2. **Cargar datos**
+- Click en **"Cargar Ejemplo"** → Carga `sample_data_complete.json`
+- O click en **"Archivo JSON"** → Selecciona tu propio JSON
 
-5. **Rotación**:
-   - Ajusta segundos en "Intervalo rotación" (default: 600s = 10min).
-   - Pulsa "Iniciar rotación" para ciclar automáticamente entre hojas.
+### 3. **Personalizar**
+- Selecciona hoja en dropdown
+- Ajusta colores (color picker + HEX)
+- Modifica tamaños de fuente (pt)
+- Cambiar espaciado si quieres
+- **Los cambios se guardan automáticamente por hoja**
 
-6. **Exportar**:
-   - **PNG**: Descarga la hoja actual como imagen PNG.
-   - **PDF**: Descarga la hoja actual como PDF.
+### 4. **Exportar**
+- **PNG Actual** → PNG de la hoja actual
+- **PNG TODO** → ZIP con todos los menús
+- **PDF Actual** → PDF de la hoja actual  
+- **PDF TODO** → PDF multipágina (todas en 1 documento)
+
+### 5. **Guardar configuración**
+- Click **"💾 Guardar"** → Descarga `menu_config.json`
+- Click **"📂 Cargar"** → Restaura estilos guardados
 
 ---
 
-## Estructura de JSON
+## 📁 Ubicación de Archivos
 
-Archivo mínimo:
+```
+/fluffy-system/
+├── sample_data_complete.json    ← ARCHIVO PRINCIPAL (edita aquí)
+├── sample_data.json             ← Versión simplificada
+├── sample_data_long.json        ← Versión extendida
+├── web/
+│   ├── admin.html              ← Panel de control
+│   ├── admin.js                ← Lógica (v0.3.2)
+│   └── admin.css               ← Estilos
+└── GUIDE.md                     ← Esta guía
+```
+
+---
+
+## 📋 Estructura de JSON - FORMATO COMPLETO
+
+**Archivo**: `sample_data_complete.json`
 
 ```json
 {
-  "meta":{
-    "fuente_url":"https://fonts.googleapis.com/...",
-    "linea_div_color":"#D4AF37",
-    "rotacion_default_minutos":10
+  "meta": {
+    "fuente_url": "https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900...",
+    "linea_div_color": "#D4AF37",
+    "rotacion_default_minutos": 10,
+    "descripcion": "Carnicería Los 44 - Menú Completo"
   },
-  "hojas":[
+  "hojas": [
     {
-      "id":"res_01",
-      "nombre":"Res - Rojo",
-      "fondo":"#7B0000",
-      "texto":"#FFFDD0",
-      "mostrar_logo":true,
-      "productos":[
+      "id": "res_cerdo_01",
+      "nombre": "Res y Cerdo",
+      "fondo": "#7B0000",
+      "texto": "#FFFDD0",
+      "mostrar_logo": true,
+      "productos": [
         {
-          "categoria":"RES",
-          "nombre":"ARRACHERA MARINADA",
-          "precio":160.00,
-          "unidad":"KG",
-          "visible":true,
-          "nota":""
+          "categoria": "RES",
+          "nombre": "ARRACHERA MARINADA",
+          "precio": 280.00,
+          "unidad": "KG",
+          "visible": true,
+          "nota": ""
+        },
+        {
+          "categoria": "CERDO",
+          "nombre": "COSTILLA CARGADA",
+          "precio": 130.00,
+          "unidad": "KG",
+          "visible": true,
+          "nota": ""
         }
       ]
     }
@@ -62,34 +97,70 @@ Archivo mínimo:
 }
 ```
 
-### Campos explicados
+### 📌 Campos Obligatorios
 
-- `hojas`: Array de pantallas/slides en rotación.
-- `fondo` (HEX): Color de fondo de la hoja.
-- `texto` (HEX): Color del texto (categoría, nombre, precio).
-- `productos`: Array de items a mostrar.
-  - `categoria`: Ej. "RES", "POLLO", "PESCADO".
-  - `nombre`: Nombre del producto.
-  - `precio`: Número (ej. 160.00).
-  - `unidad`: "KG", "PIEZA", etc.
-  - `visible`: true/false (mostrar/ocultar).
-  - `nota`: Texto adicional (ej. "Bajo pedido").
+#### Nivel `meta` (Global):
+| Campo | Tipo | Ejemplo | Obligatorio |
+|-------|------|---------|------------|
+| `fuente_url` | string | Google Fonts URL | Sí |
+| `linea_div_color` | HEX | "#D4AF37" | Sí |
+| `rotacion_default_minutos` | número | 10 | Sí |
+| `descripcion` | string | "Mi menú" | No |
+
+#### Nivel `hojas` (Por pantalla):
+| Campo | Tipo | Ejemplo | Obligatorio |
+|-------|------|---------|------------|
+| `id` | string | "res_01" | Recomendado |
+| `nombre` | string | "Res y Cerdo" | Sí |
+| `fondo` | HEX | "#7B0000" | Sí |
+| `texto` | HEX | "#FFFDD0" | Sí |
+| `mostrar_logo` | boolean | true/false | No |
+| `productos` | array | [...] | Sí |
+
+#### Nivel `productos` (Items del menú):
+| Campo | Tipo | Ejemplo | Obligatorio |
+|-------|------|---------|------------|
+| `categoria` | string | "RES", "POLLO", "PESCADO" | Sí |
+| `nombre` | string | "ARRACHERA MARINADA" | Sí |
+| `precio` | número | 280.00 | Sí |
+| `unidad` | string | "KG", "PIEZA", "DOCENA" | Sí |
+| `visible` | boolean | true/false | Sí |
+| `nota` | string | "Bajo pedido" | No |
 
 ---
 
-## Paleta de colores recomendada (Pantone 2025/26)
+## 🎨 Categorías Disponibles
 
-| Categoría | Fondo | Texto |
-|-----------|-------|-------|
-| Res y Cerdo | #7B0000 | #FFFDD0 |
-| Pollo | #E6A519 | #2B1B00 |
-| Pescados | #001F5B | #FFFDD0 |
-| Víveres | #004B23 | #FFFDD0 |
-| Vísceras | #8D918D | #FFFFFF |
+```
+"RES"         → Carnes rojas
+"CERDO"       → Carnes de cerdo
+"POLLO"       → Pollo
+"PESCADO"     → Pescados
+"MARISCO"     → Mariscos
+"VÍSCERAS"    → Órganos internos
+"ARROZ"       → Granos
+"SEMILLAS"    → Frijoles, lentejas
+"HUEVO"       → Huevos
+"AZÚCAR"      → Azúcares y condimentos
+```
 
 ---
 
-## Tamaños de fuente (pt)
+## 🎨 Paleta de Colores Recomendada
+
+| Categoría | Fondo | Texto | Uso |
+|-----------|-------|-------|-----|
+| Res y Cerdo | #7B0000 | #FFFDD0 | Rojo oscuro elegante |
+| Pollo | #E6A519 | #2B1B00 | Oro/Marrón |
+| Pescados | #001F5B | #FFFDD0 | Azul marino |
+| Víveres | #004B23 | #FFFDD0 | Verde oscuro |
+| Vísceras | #8D918D | #FFFFFF | Gris claro |
+
+**Nota**: Puedes cambiar cualquier color en la app sin editar JSON
+
+---
+
+## 📏 Tamaños de Fuente (en puntos)
 
 Por defecto (optimizado para 5 metros):
 - **Categoría**: 120pt (Bold)
