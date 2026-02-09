@@ -611,7 +611,7 @@
   // Rotation - FIXED
   function startRotation() {
     stopRotation();
-    const seconds = Math.max(5, parseInt(rotIntervalInput.value) || 600);
+    const seconds = Math.max(1, parseInt(rotIntervalInput.value) || 600);
     console.log('Rotation starting, interval:', seconds, 'seconds');
     
     rotTimer = setInterval(() => {
