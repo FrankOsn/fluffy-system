@@ -1,4 +1,5 @@
-// Admin Panel - Menu Generator v0.3.2
+// Admin Panel - Menu Generator v0.3.2 [STABLE] - GitHub Pages Ready
+// Features: Per-sheet styles, Color picker+HEX, ZIP exports, Multi-page PDF, Rotation, Config save/load
 (function(){
   const canvas = document.getElementById('menuCanvas');
   const ctx = canvas.getContext('2d');
