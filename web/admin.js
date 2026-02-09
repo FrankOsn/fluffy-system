@@ -498,7 +498,6 @@
         // Get product unit (use product unidad, fallback to hoja unidad for compatibility)
         const productUnidad = it.unidad || hoja.unidad || 'KG';
         
-        // Only show product name on first line
         const nombrePx = Math.round(ptToPx(sizes.nombre));
         const pricePx = Math.round(ptToPx(sizes.precio));
         const unidadPx = Math.round(ptToPx(sizes.unidad));
@@ -506,22 +505,53 @@
         ctx.fillStyle = textColor;
         ctx.textAlign = 'left';
         
-        // Format: nombre | unidad $precio
+        // Format: nombre | unidad $precio (with separate font sizes for each part)
         const priceStr = `$${Number(it.precio).toFixed(2)}`;
-        let lineText = it.nombre;
+        let currentX = col.x;
         
+        // 1. Render product name
+        ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
+        ctx.fillText(it.nombre, currentX, y);
+        
+        // Measure width of nombre to know where to place separator
+        const nameWidth = ctx.measureText(it.nombre).width;
+        currentX += nameWidth;
+        
+        // 2. Render separator + unidad (if visible)
         if (cfg.showUnidad) {
-          lineText += ` | ${productUnidad} ${priceStr}`;
+          const separatorText = ' | ';
+          ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
+          ctx.fillText(separatorText, currentX, y);
+          const sepWidth = ctx.measureText(separatorText).width;
+          currentX += sepWidth;
+          
+          // Unidad with its own font size
+          ctx.font = `600 ${unidadPx}px "Roboto Serif", Arial, sans-serif`;
+          // Center unidad vertically relative to nombre
+          const yOffset = (nombrePx - unidadPx) * 0.3;
+          ctx.fillText(productUnidad, currentX, y + yOffset);
+          
+          const unidadWidth = ctx.measureText(productUnidad).width;
+          currentX += unidadWidth;
+          
+          // Add space before price
+          ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
+          ctx.fillText(' ', currentX, y);
+          currentX += ctx.measureText(' ').width;
         } else {
-          lineText += ` ${priceStr}`;
+          // Just add space before price
+          ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
+          ctx.fillText(' ', currentX, y);
+          currentX += ctx.measureText(' ').width;
         }
         
-        // Render product line
-        ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
-        ctx.fillText(lineText, col.x, y);
+        // 3. Render price with its own font size
+        ctx.font = `900 ${pricePx}px "Roboto Serif", Arial, sans-serif`;
+        const yOffsetPrice = (nombrePx - pricePx) * 0.3;
+        ctx.fillText(priceStr, currentX, y + yOffsetPrice);
         
         ctx.textAlign = 'left';
-        y += Math.round(nombrePx * 1.4) + cfg.itemSpacing;
+        y += Math.round(Math.max(nombrePx, pricePx, unidadPx) * 1.4) + cfg.itemSpacing;
       }
     });
 
