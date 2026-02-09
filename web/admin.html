@@ -34,7 +34,7 @@
       <!-- Selección de Hoja -->
       <section class="panel-section">
         <h3>📄 Hoja Actual</h3>
-        <label>Seleccionar:</label>
+        <label>Seleccionar: <strong id="sheetCount">0/0</strong></label>
         <select id="sheetSelect"></select>
       </section>
 
@@ -54,34 +54,34 @@
         <div class="form-row">
           <div>
             <label>Categoría</label>
-            <input id="categoria_pt" type="number" value="120" min="60" max="200" />
+            <input id="categoria_pt" type="number" value="120" min="1" max="300" />
           </div>
           <div>
             <label>Nombre</label>
-            <input id="nombre_pt" type="number" value="85" min="40" max="150" />
+            <input id="nombre_pt" type="number" value="85" min="1" max="300" />
           </div>
           <div>
             <label>Precio</label>
-            <input id="precio_pt" type="number" value="100" min="50" max="200" />
+            <input id="precio_pt" type="number" value="100" min="1" max="300" />
           </div>
         </div>
       </section>
 
       <!-- Configuración de Colores -->
       <section class="panel-section">
-        <h3>🎨 Colores</h3>
+        <h3>🎨 Colores (HEX)</h3>
         <div class="form-row">
           <div>
             <label>Fondo</label>
-            <input id="bgcolor" type="color" value="#7B0000" />
+            <input id="bgcolor" type="text" placeholder="#7B0000" value="#7B0000" />
           </div>
           <div>
             <label>Texto</label>
-            <input id="textcolor" type="color" value="#FFFDD0" />
+            <input id="textcolor" type="text" placeholder="#FFFDD0" value="#FFFDD0" />
           </div>
           <div>
             <label>Divisor</label>
-            <input id="dividercolor" type="color" value="#D4AF37" />
+            <input id="dividercolor" type="text" placeholder="#D4AF37" value="#D4AF37" />
           </div>
         </div>
       </section>
@@ -112,12 +112,26 @@
         </div>
       </section>
 
+      <!-- Configuración -->
+      <section class="panel-section">
+        <h3>⚙️ Configuración</h3>
+        <div class="button-group">
+          <button id="saveConfig">💾 Guardar</button>
+          <button id="loadConfig">📂 Cargar</button>
+        </div>
+        <input id="configFile" type="file" accept="application/json" style="display:none" />
+      </section>
+
       <!-- Exportar -->
       <section class="panel-section">
         <h3>💾 Exportar</h3>
         <div class="button-group">
-          <button id="exportPNG">PNG</button>
-          <button id="exportPDF">PDF</button>
+          <button id="exportPNG">PNG Actual</button>
+          <button id="exportAllPNG">PNG TODO</button>
+        </div>
+        <div class="button-group">
+          <button id="exportPDF">PDF Actual</button>
+          <button id="exportAllPDF">PDF TODO</button>
         </div>
       </section>
     </aside>
