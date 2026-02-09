@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Generador de Menús — Control Panel</title>
+  <link rel="stylesheet" href="admin.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <!-- Panel de Control Izquierda -->
+    <aside class="panel">
+      <h1>Control de Menú</h1>
+
+      <!-- Orientación y Aspectos -->
+      <section class="panel-section">
+        <h3>📺 Pantalla</h3>
+        <label>Orientación:</label>
+        <div class="radio-group">
+          <label><input type="radio" name="orientation" value="landscape" checked /> Horizontal (16:9)</label>
+          <label><input type="radio" name="orientation" value="portrait" /> Vertical (9:16)</label>
+        </div>
+      </section>
+
+      <!-- Carga de Datos -->
+      <section class="panel-section">
+        <h3>📂 Datos</h3>
+        <label>Archivo JSON</label>
+        <input id="fileInput" type="file" accept="application/json" />
+        <button id="btnLoadSample">Cargar Ejemplo</button>
+      </section>
+
+      <!-- Selección de Hoja -->
+      <section class="panel-section">
+        <h3>📄 Hoja Actual</h3>
+        <label>Seleccionar:</label>
+        <select id="sheetSelect"></select>
+      </section>
+
+      <!-- Configuración de Fuente -->
+      <section class="panel-section">
+        <h3>🔤 Fuente</h3>
+        <label>Google Fonts CSS</label>
+        <input id="fontCss" type="text" placeholder="https://fonts.googleapis.com/..." 
+          value="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" />
+        <label>O cargar local (.ttf/.woff/.woff2)</label>
+        <input id="fontFile" type="file" accept=".ttf,.woff,.woff2" />
+      </section>
+
+      <!-- Configuración de Tamaños -->
+      <section class="panel-section">
+        <h3>📏 Tamaños (pt)</h3>
+        <div class="form-row">
+          <div>
+            <label>Categoría</label>
+            <input id="categoria_pt" type="number" value="120" min="60" max="200" />
+          </div>
+          <div>
+            <label>Nombre</label>
+            <input id="nombre_pt" type="number" value="85" min="40" max="150" />
+          </div>
+          <div>
+            <label>Precio</label>
+            <input id="precio_pt" type="number" value="100" min="50" max="200" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Configuración de Colores -->
+      <section class="panel-section">
+        <h3>🎨 Colores</h3>
+        <div class="form-row">
+          <div>
+            <label>Fondo</label>
+            <input id="bgcolor" type="color" value="#7B0000" />
+          </div>
+          <div>
+            <label>Texto</label>
+            <input id="textcolor" type="color" value="#FFFDD0" />
+          </div>
+          <div>
+            <label>Divisor</label>
+            <input id="dividercolor" type="color" value="#D4AF37" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Configuración de Espaciado -->
+      <section class="panel-section">
+        <h3>📦 Espaciado (px)</h3>
+        <div class="form-row">
+          <div>
+            <label>Entre Items</label>
+            <input id="itemSpacing" type="number" value="32" min="10" max="80" />
+          </div>
+          <div>
+            <label>Margen</label>
+            <input id="margin" type="number" value="50" min="20" max="100" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Rotación -->
+      <section class="panel-section">
+        <h3>⏱️ Rotación</h3>
+        <label>Intervalo (segundos)</label>
+        <input id="rotInterval" type="number" value="600" min="5" />
+        <div class="button-group">
+          <button id="startRotation">Iniciar</button>
+          <button id="stopRotation">Parar</button>
+        </div>
+      </section>
+
+      <!-- Exportar -->
+      <section class="panel-section">
+        <h3>💾 Exportar</h3>
+        <div class="button-group">
+          <button id="exportPNG">PNG</button>
+          <button id="exportPDF">PDF</button>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Preview Derecha -->
+    <main class="preview-container">
+      <div class="preview-header">
+        <h2>Vista Previa</h2>
+        <span id="previewInfo">Cargando...</span>
+      </div>
+      <canvas id="menuCanvas"></canvas>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
