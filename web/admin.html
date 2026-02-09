@@ -54,8 +54,8 @@
         <h3>📏 Tamaños (pt)</h3>
         <div class="form-row">
           <div>
-            <label>Categoría</label>
-            <input id="categoria_pt" type="number" value="120" min="1" max="300" />
+            <label>Título Categoría</label>
+            <input id="titulo_pt" type="number" value="140" min="60" max="250" />
           </div>
           <div>
             <label>Nombre</label>
@@ -65,6 +65,35 @@
             <label>Precio</label>
             <input id="precio_pt" type="number" value="100" min="1" max="300" />
           </div>
+          <div>
+            <label>Unidad (junto a precio)</label>
+            <input id="unidad_pt" type="number" value="65" min="30" max="120" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Mostrar Elementos -->
+      <section class="panel-section">
+        <h3>👁️ Mostrar/Ocultar</h3>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px;">
+            <input id="showTitulo" type="checkbox" checked />
+            Mostrar Título de Categoría
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px;">
+            <input id="showUnidad" type="checkbox" checked />
+            Mostrar Unidad (ej: | KG)
+          </label>
+        </div>
+      </section>
+
+      <!-- Logo -->
+      <section class="panel-section">
+        <h3>🏢 Logo</h3>
+        <label>Cargar Logo (PNG/JPG)</label>
+        <input id="logoFile" type="file" accept="image/png,image/jpeg" />
+        <div style="margin-top: 10px; font-size: 12px; color: #666;">
+          💾 Se guarda en navegador (no en servidor)
         </div>
       </section>
 
@@ -94,6 +123,13 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- Espaciado (px) y Disclaimer -->
+      <section class="panel-section">
+        <h3>💬 Leyenda / Disclaimer</h3>
+        <label>Texto al pie (usa \n para nueva línea)</label>
+        <textarea id="disclaimer" rows="3" placeholder="* PRECIOS SUJETOS A CAMBIO\n* PRODUCTOS BAJO PEDIDO" style="width: 100%; font-size: 12px; font-family: monospace;"></textarea>
       </section>
 
       <!-- Configuración de Espaciado -->

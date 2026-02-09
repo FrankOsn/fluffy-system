@@ -1,5 +1,5 @@
-// Admin Panel - Menu Generator v0.3.2 [STABLE] - GitHub Pages Ready
-// Features: Per-sheet styles, Color picker+HEX, ZIP exports, Multi-page PDF, Rotation, Config save/load
+// Admin Panel - Menu Generator v0.4.0 [STABLE] - Categoría central + Unidad configurable + Disclaimer
+// Features: Per-sheet styles, Category title, Unit display, Disclaimer, Logo upload, ZIP exports, Multi-page PDF
 (function(){
   const canvas = document.getElementById('menuCanvas');
   const ctx = canvas.getContext('2d');
@@ -12,9 +12,14 @@
   const sheetCount = document.getElementById('sheetCount');
   const fontCssInput = document.getElementById('fontCss');
   const fontFileInput = document.getElementById('fontFile');
-  const categoria_ptInput = document.getElementById('categoria_pt');
+  const logoFileInput = document.getElementById('logoFile');
+  const titulo_ptInput = document.getElementById('titulo_pt');
   const nombre_ptInput = document.getElementById('nombre_pt');
   const precio_ptInput = document.getElementById('precio_pt');
+  const unidad_ptInput = document.getElementById('unidad_pt');
+  const showTituloInput = document.getElementById('showTitulo');
+  const showUnidadInput = document.getElementById('showUnidad');
+  const disclaimerInput = document.getElementById('disclaimer');
   const bgColorInput = document.getElementById('bgcolor');
   const bgColorPicker = document.getElementById('bgcolorPicker');
   const textColorInput = document.getElementById('textcolor');
@@ -37,6 +42,7 @@
 
   let data = null;
   let currentIndex = 0;
+  let currentLogoImage = null;
   let rotTimer = null;
   let fontsLoaded = false;
   let orientation = 'landscape'; // 16:9
@@ -44,10 +50,51 @@
   // Store per-sheet styles
   let sheetStyles = {};
 
-  console.log('Admin panel v0.2 initialized');
+  // Logo file input handler
+  if (logoFileInput) {
+    logoFileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!data || !data.hojas) {
+        alert('No hay datos cargados');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const dataurl = event.target.result;
+        const currentSheetId = sheetSelect.value;
+        currentIndex = parseInt(currentSheetId, 10) || 0;
+        const hoja = data && data.hojas ? data.hojas[currentIndex] : null;
+        const sheetKey = hoja && hoja.id ? hoja.id : `sheet_${currentIndex}`;
+        
+        // Save logo to localStorage
+        localStorage.setItem(`logo_${sheetKey}`, dataurl);
+        
+        // Update the sheet
+        loadSheetStyle();
+        renderSheet(currentIndex);
+        
+        alert(`Logo guardado para ${document.querySelector(`#sheetSelect option[value="${currentSheetId}"]`).text}`);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  console.log('Admin panel v0.4.0 initialized');
 
   // Canvas dimensions based on orientation
   function getCanvasDimensions() {
+    // Check if we have a current sheet with its own orientation
+    if (data && data.hojas && data.hojas[currentIndex] && data.hojas[currentIndex].orientacion) {
+      const sheetOrientation = data.hojas[currentIndex].orientacion;
+      if (sheetOrientation === 'landscape') {
+        return { width: 1280, height: 720 }; // 16:9
+      } else {
+        return { width: 720, height: 1280 }; // 9:16
+      }
+    }
+    // Fallback to global orientation
     if (orientation === 'landscape') {
       return { width: 1280, height: 720 }; // 16:9
     } else {
@@ -80,7 +127,10 @@
       sheetStyles = {};
       populateSheetSelect();
       initColorSync();
-      loadFont(fontCssInput.value).then(() => renderSheet(0));
+      currentIndex = 0;
+      loadSheetStyle();
+      const firstSheetFont = data.hojas[0]?.fuente_url || fontCssInput.value;
+      loadFont(firstSheetFont).then(() => renderSheet(0));
     } catch (e) {
       console.error('Error loading sample:', e);
       previewInfo.textContent = 'Error cargando datos: ' + e.message;
@@ -160,6 +210,8 @@
     currentIndex = parseInt(e.target.value);
     updateSheetCounter();
     loadSheetStyle();
+    const sheetFont = data.hojas[currentIndex]?.fuente_url || fontCssInput.value;
+    if (sheetFont) loadFont(sheetFont);
     renderSheet(currentIndex);
   });
 
@@ -226,6 +278,7 @@
       populateSheetSelect();
       initColorSync();
       currentIndex = 0;
+      loadSheetStyle();
       renderSheet(0);
       console.log('Custom JSON file loaded');
     } catch (e) {
@@ -241,9 +294,13 @@
     const sheetId = hoja.id || `sheet_${currentIndex}`;
     
     sheetStyles[sheetId] = {
-      categoria_pt: parseInt(categoria_ptInput.value) || 120,
+      titulo_pt: parseInt(titulo_ptInput.value) || 140,
       nombre_pt: parseInt(nombre_ptInput.value) || 85,
       precio_pt: parseInt(precio_ptInput.value) || 100,
+      unidad_pt: parseInt(unidad_ptInput.value) || 65,
+      showTitulo: showTituloInput.checked,
+      showUnidad: showUnidadInput.checked,
+      disclaimer: disclaimerInput.value || '',
       bgcolor: bgColorInput.value || '#7B0000',
       textcolor: textColorInput.value || '#FFFDD0',
       dividercolor: dividerColorInput.value || '#D4AF37',
@@ -261,33 +318,70 @@
     const sheetId = hoja.id || `sheet_${currentIndex}`;
     
     const style = sheetStyles[sheetId];
+    const hojaDivider = hoja.linea_div_color || '#D4AF37';
+    
+    // Load logo from localStorage if exists
+    const logoData = localStorage.getItem(`logo_${sheetId}`);
+    window.currentLogo = logoData || null;
+    if (logoData) {
+      currentLogoImage = new Image();
+      currentLogoImage.src = logoData;
+    } else {
+      currentLogoImage = null;
+    }
+    
     if (style) {
-      categoria_ptInput.value = style.categoria_pt;
+      titulo_ptInput.value = style.titulo_pt;
       nombre_ptInput.value = style.nombre_pt;
       precio_ptInput.value = style.precio_pt;
+      unidad_ptInput.value = style.unidad_pt;
+      showTituloInput.checked = style.showTitulo !== false;
+      showUnidadInput.checked = style.showUnidad !== false;
+      disclaimerInput.value = style.disclaimer || '';
       bgColorInput.value = style.bgcolor;
       bgColorPicker.value = style.bgcolor;
       textColorInput.value = style.textcolor;
       textColorPicker.value = style.textcolor;
-      dividerColorInput.value = style.dividercolor;
-      dividerColorPicker.value = style.dividercolor;
+      dividerColorInput.value = style.dividercolor || hojaDivider;
+      dividerColorPicker.value = style.dividercolor || hojaDivider;
       itemSpacingInput.value = style.itemSpacing;
       marginInput.value = style.margin;
       console.log('Sheet style loaded for:', sheetId);
     } else {
       // Default values from hoja
-      categoria_ptInput.value = 120;
+      const catConfig = hoja.categoria_config || {};
+      const unidadConfig = hoja.unidad_config || {};
+      
+      titulo_ptInput.value = catConfig.size || 140;
       nombre_ptInput.value = 85;
       precio_ptInput.value = 100;
+      unidad_ptInput.value = unidadConfig.size || 65;
+      showTituloInput.checked = catConfig.visible !== false;
+      showUnidadInput.checked = unidadConfig.visible !== false;
+      disclaimerInput.value = hoja.disclaimer || '';
       bgColorInput.value = hoja.fondo || '#7B0000';
       bgColorPicker.value = hoja.fondo || '#7B0000';
       textColorInput.value = hoja.texto || '#FFFDD0';
       textColorPicker.value = hoja.texto || '#FFFDD0';
-      dividerColorInput.value = '#D4AF37';
-      dividerColorPicker.value = '#D4AF37';
+      dividerColorInput.value = hojaDivider;
+      dividerColorPicker.value = hojaDivider;
       itemSpacingInput.value = 32;
       marginInput.value = 50;
     }
+  }
+
+  function ensureLogoReady() {
+    if (!window.currentLogo) return Promise.resolve();
+    if (currentLogoImage && currentLogoImage.complete) return Promise.resolve();
+    return new Promise((resolve) => {
+      const img = currentLogoImage || new Image();
+      img.onload = () => {
+        currentLogoImage = img;
+        resolve();
+      };
+      img.onerror = () => resolve();
+      img.src = window.currentLogo;
+    });
   }
 
   // Render function
@@ -315,35 +409,58 @@
     const cfg = {
       margin: parseInt(marginInput.value) || 50,
       colGap: 18,
-      categoria_pt: parseInt(categoria_ptInput.value) || 120,
+      titulo_pt: parseInt(titulo_ptInput.value) || 140,
       nombre_pt: parseInt(nombre_ptInput.value) || 85,
       precio_pt: parseInt(precio_ptInput.value) || 100,
+      unidad_pt: parseInt(unidad_ptInput.value) || 65,
       itemSpacing: parseInt(itemSpacingInput.value) || 32,
-      col_padding: 50
+      col_padding: 50,
+      showTitulo: showTituloInput.checked,
+      showUnidad: showUnidadInput.checked,
+      disclaimer: disclaimerInput.value || ''
     };
+    
+    const textColor = textColorInput.value || '#FFFDD0';
+    let currentY = cfg.margin;
+    
+    // Render title (category) centered at top
+    if (cfg.showTitulo && hoja.categoria) {
+      const tituloPx = Math.round(cfg.titulo_pt * 1.333);
+      ctx.font = `900 ${tituloPx}px "Roboto Serif", Arial, sans-serif`;
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      ctx.fillText(hoja.categoria, canvas.width / 2, currentY);
+      currentY += Math.round(tituloPx * 1.3) + 20;
+      ctx.textAlign = 'left';
+    } else {
+      currentY += 40;
+    }
 
     const usableW = canvas.width - cfg.margin * 2;
     const colW = (usableW - cfg.colGap) / 2;
     const leftX = cfg.margin + cfg.col_padding;
     const rightX = cfg.margin + colW + cfg.colGap + cfg.col_padding;
     const dividerX = cfg.margin + colW + cfg.colGap / 2;
+    
+    const dividerStartY = currentY;
+    const disclaimerHeight = cfg.disclaimer ? 80 : 40;
 
     // Divider
     ctx.fillStyle = dividerColorInput.value || '#D4AF37';
-    ctx.fillRect(dividerX - 8, cfg.margin + 20, 16, canvas.height - cfg.margin * 2 - 40);
+    ctx.fillRect(dividerX - 8, dividerStartY, 16, canvas.height - dividerStartY - cfg.margin - disclaimerHeight);
 
     // Prep items
     const items = hoja.productos.filter(p => p.visible !== false).map(p => ({ ...p }));
 
     const targetSizes = {
-      categoria: cfg.categoria_pt,
       nombre: cfg.nombre_pt,
-      precio: cfg.precio_pt
+      precio: cfg.precio_pt,
+      unidad: cfg.unidad_pt
     };
     const minSizes = {
-      categoria: Math.round(targetSizes.categoria * 0.7),
       nombre: Math.max(1, Math.round(targetSizes.nombre * 0.55)),
-      precio: Math.round(targetSizes.precio * 0.75)
+      precio: Math.round(targetSizes.precio * 0.75),
+      unidad: Math.round(targetSizes.unidad * 0.75)
     };
 
     function ptToPx(pt) { return pt * 1.333; }
@@ -369,19 +486,18 @@
     function estimateHeights(sizes) {
       const colWidthPx = colW - cfg.col_padding * 2;
       items.forEach(it => {
-        const catH = Math.round(ptToPx(sizes.categoria) * 1.2);
         const nombrePx = ptToPx(sizes.nombre);
         const nameLines = Math.max(1, wrapText(nombrePx, it.nombre, colWidthPx).length);
         const lineH = Math.round(nombrePx * 1.2);
         const priceH = Math.round(ptToPx(sizes.precio) * 1.2);
-        it.estHeight = catH + 8 + nameLines * lineH + 12 + priceH + cfg.itemSpacing;
+        it.estHeight = nameLines * lineH + 12 + priceH + cfg.itemSpacing;
       });
     }
 
     // Distribute
     const cols = [{ items: [], height: 0 }, { items: [], height: 0 }];
     let sizes = { ...targetSizes };
-    const maxContentHeight = canvas.height - cfg.margin * 2 - 80;
+    const maxContentHeight = canvas.height - dividerStartY - cfg.margin - disclaimerHeight;
 
     function distribute() {
       cols[0].items = []; cols[0].height = 0;
@@ -407,49 +523,96 @@
     }
 
     // Render columns
-    const textColor = textColorInput.value || '#FFFDD0';
     [{x: leftX, idx: 0}, {x: rightX, idx: 1}].forEach(col => {
-      let y = cfg.margin + 40;
+      let y = dividerStartY;
       const colData = cols[col.idx];
 
       for (const it of colData.items) {
-        // Category
-        const catPx = Math.round(ptToPx(sizes.categoria));
-        ctx.font = `900 ${catPx}px "Roboto Serif", Arial, sans-serif`;
-        ctx.fillStyle = textColor;
-        ctx.textAlign = 'left';
-        ctx.fillText(it.categoria, col.x, y);
-        y += catPx + 8;
-
         // Name
         const nombrePx = Math.round(ptToPx(sizes.nombre));
         const nameLines = wrapText(nombrePx, it.nombre, colW - cfg.col_padding * 2);
         ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
         ctx.fillStyle = textColor;
+        ctx.textAlign = 'left';
         for (const line of nameLines) {
           ctx.fillText(line, col.x, y);
           y += Math.round(nombrePx * 1.2);
         }
         y += 12;
 
-        // Price
+        // Price + Unit
         const pricePx = Math.round(ptToPx(sizes.precio));
         ctx.font = `900 ${pricePx}px "Roboto Serif", Arial, sans-serif`;
         ctx.fillStyle = textColor;
         ctx.textAlign = 'right';
         const priceStr = `$${Number(it.precio).toFixed(2)}`;
-        ctx.fillText(priceStr, col.x + (colW - cfg.col_padding * 2), y);
+        const priceX = col.x + (colW - cfg.col_padding * 2);
+        ctx.fillText(priceStr, priceX, y);
+        
+        // Unit (if visible)
+        if (cfg.showUnidad && hoja.unidad) {
+          const unidadPx = Math.round(ptToPx(sizes.unidad));
+          ctx.font = `600 ${unidadPx}px "Roboto Serif", Arial, sans-serif`;
+          ctx.fillStyle = textColor;
+          const priceWidth = ctx.measureText(priceStr).width;
+          ctx.font = `900 ${pricePx}px "Roboto Serif", Arial, sans-serif`;
+          const priceWidthBold = ctx.measureText(priceStr).width;
+          ctx.font = `600 ${unidadPx}px "Roboto Serif", Arial, sans-serif`;
+          const unitStr = ` | ${hoja.unidad}`;
+          ctx.fillText(unitStr, priceX - priceWidthBold - 10, y + (pricePx - unidadPx) * 0.5);
+        }
+        
         ctx.textAlign = 'left';
         y += Math.round(pricePx * 1.2) + cfg.itemSpacing;
       }
     });
+
+    // Render logo if exists
+    if (window.currentLogo && hoja.mostrar_logo) {
+      const logoSize = 80;
+      const logoPaddingRight = 30;
+      const logoPaddingTop = 30;
+      const logoX = canvas.width - logoSize - logoPaddingRight;
+      const logoY = logoPaddingTop;
+
+      const drawLogo = (img) => {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        ctx.fillRect(logoX - 5, logoY - 5, logoSize + 10, logoSize + 10);
+        ctx.drawImage(img, logoX, logoY, logoSize, logoSize);
+      };
+
+      if (currentLogoImage && currentLogoImage.complete) {
+        drawLogo(currentLogoImage);
+      } else {
+        const logoImg = new Image();
+        logoImg.onload = function() {
+          currentLogoImage = logoImg;
+          drawLogo(logoImg);
+        };
+        logoImg.src = window.currentLogo;
+      }
+    }
+    
+    // Render disclaimer at bottom
+    if (cfg.disclaimer && cfg.disclaimer.trim()) {
+      const disclaimerFontSize = 28;
+      const disclaimerY = canvas.height - cfg.margin - 40;
+      ctx.font = `400 ${disclaimerFontSize}px "Roboto Serif", Arial, sans-serif`;
+      ctx.fillStyle = textColor;
+      ctx.textAlign = 'center';
+      const lines = cfg.disclaimer.split('\n').filter(l => l.trim());
+      lines.forEach((line, idx) => {
+        ctx.fillText(line.trim(), canvas.width / 2, disclaimerY + idx * disclaimerFontSize * 1.2);
+      });
+      ctx.textAlign = 'left';
+    }
 
     // Update info
     previewInfo.textContent = `${hoja.nombre} (${orientation === 'landscape' ? '1280×720' : '720×1280'}) - ${items.length} items`;
   }
 
   // Input change listeners for live update
-  [categoria_ptInput, nombre_ptInput, precio_ptInput, bgColorInput, textColorInput, dividerColorInput, itemSpacingInput, marginInput].forEach(input => {
+  [titulo_ptInput, nombre_ptInput, precio_ptInput, unidad_ptInput, showTituloInput, showUnidadInput, disclaimerInput, bgColorInput, textColorInput, dividerColorInput, itemSpacingInput, marginInput].forEach(input => {
     input.addEventListener('change', () => {
       saveSheetStyle();
       renderSheet(currentIndex);
@@ -497,11 +660,13 @@
     document.body.removeChild(a);
   }
 
-  exportPNGBtn.addEventListener('click', () => {
+  exportPNGBtn.addEventListener('click', async () => {
     if (!data) {
       alert('No hay datos cargados');
       return;
     }
+    await ensureLogoReady();
+    renderSheet(currentIndex);
     const uri = canvas.toDataURL('image/png');
     downloadURI(uri, `menu_${currentIndex + 1}_${data.hojas[currentIndex].nombre}.png`);
     console.log('PNG exported:', `menu_${currentIndex + 1}.png`);
@@ -527,6 +692,7 @@
         currentIndex = i;
         updateSheetCounter();
         loadSheetStyle();
+        await ensureLogoReady();
         renderSheet(i);
         
         await new Promise(resolve => setTimeout(resolve, 150));
@@ -559,7 +725,7 @@
     }
   });
 
-  exportPDFBtn.addEventListener('click', () => {
+  exportPDFBtn.addEventListener('click', async () => {
     if (!data) {
       alert('No hay datos cargados');
       return;
@@ -570,6 +736,8 @@
       return;
     }
     try {
+      await ensureLogoReady();
+      renderSheet(currentIndex);
       const uri = canvas.toDataURL('image/png');
       const { jsPDF } = window.jspdf;
       const dims = getCanvasDimensions();
@@ -608,6 +776,7 @@
       currentIndex = 0;
       updateSheetCounter();
       loadSheetStyle();
+      await ensureLogoReady();
       renderSheet(0);
       
       let uri = canvas.toDataURL('image/png');
@@ -624,6 +793,7 @@
         currentIndex = i;
         updateSheetCounter();
         loadSheetStyle();
+        await ensureLogoReady();
         renderSheet(i);
         
         await new Promise(resolve => setTimeout(resolve, 150));
