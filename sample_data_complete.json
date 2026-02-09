@@ -29,14 +29,14 @@
       },
       "disclaimer":"* PRECIOS SUJETOS A CAMBIO SIN PREVIO AVISO\n* PRODUCTOS CON DISPONIBILIDAD LIMITADA",
       "productos":[
-        {"nombre":"ARRACHERA NACIONAL","precio":240.00,"visible":true,"posicion":1},
-        {"nombre":"BISTEC FRESCO","precio":220.00,"visible":true,"posicion":2},
-        {"nombre":"BISTEC REBANADO","precio":200.00,"visible":true,"posicion":3},
-        {"nombre":"CECINA NATURAL","precio":260.00,"visible":true,"posicion":4},
-        {"nombre":"CHAMBARETE CON HUESO","precio":160.00,"visible":true,"posicion":5},
-        {"nombre":"CHAMBARETE SIN HUESO","precio":200.00,"visible":true,"posicion":6},
-        {"nombre":"COSTILLA ROAST BEEF","precio":230.00,"visible":true,"posicion":7},
-        {"nombre":"FALDA","precio":95.00,"visible":true,"posicion":8}
+        {"nombre":"ARRACHERA NACIONAL","precio":240.00,"unidad":"KG","visible":true,"posicion":1},
+        {"nombre":"BISTEC FRESCO","precio":220.00,"unidad":"KG","visible":true,"posicion":2},
+        {"nombre":"BISTEC REBANADO","precio":200.00,"unidad":"KG","visible":true,"posicion":3},
+        {"nombre":"CECINA NATURAL","precio":260.00,"unidad":"KG","visible":true,"posicion":4},
+        {"nombre":"CHAMBARETE CON HUESO","precio":160.00,"unidad":"KG","visible":true,"posicion":5},
+        {"nombre":"CHAMBARETE SIN HUESO","precio":200.00,"unidad":"KG","visible":true,"posicion":6},
+        {"nombre":"COSTILLA ROAST BEEF","precio":230.00,"unidad":"KG","visible":true,"posicion":7},
+        {"nombre":"FALDA","precio":95.00,"unidad":"KG","visible":true,"posicion":8}
       ]
     },
     {
@@ -64,13 +64,13 @@
       },
       "disclaimer":"* PRECIOS SUJETOS A CAMBIO SIN PREVIO AVISO\n* PRODUCTOS CON DISPONIBILIDAD LIMITADA",
       "productos":[
-        {"nombre":"ARRACHERA NACIONAL","precio":240.00,"visible":true,"posicion":1},
-        {"nombre":"ARRACHERA MARINADA","precio":280.00,"visible":true,"posicion":2},
-        {"nombre":"BISTEC FRESCO","precio":220.00,"visible":true,"posicion":3},
-        {"nombre":"RIB EYE PRIME","precio":420.00,"visible":true,"posicion":4},
-        {"nombre":"FILETE DE RES","precio":380.00,"visible":true,"posicion":5},
-        {"nombre":"T-BONE CORTE NACIONAL","precio":340.00,"visible":true,"posicion":6},
-        {"nombre":"CHAMBARETE CON HUESO","precio":110.00,"visible":true,"posicion":7}
+        {"nombre":"ARRACHERA NACIONAL","precio":240.00,"unidad":"KG","visible":true,"posicion":1},
+        {"nombre":"ARRACHERA MARINADA","precio":280.00,"unidad":"KG","visible":true,"posicion":2},
+        {"nombre":"BISTEC FRESCO","precio":220.00,"unidad":"KG","visible":true,"posicion":3},
+        {"nombre":"RIB EYE PRIME","precio":420.00,"unidad":"KG","visible":true,"posicion":4},
+        {"nombre":"FILETE DE RES","precio":380.00,"unidad":"KG","visible":true,"posicion":5},
+        {"nombre":"T-BONE CORTE NACIONAL","precio":340.00,"unidad":"KG","visible":true,"posicion":6},
+        {"nombre":"CHAMBARETE CON HUESO","precio":110.00,"unidad":"KG","visible":true,"posicion":7}
       ]
     },
     {
@@ -98,11 +98,11 @@
       },
       "disclaimer":"* PRECIOS SUJETOS A CAMBIO SIN PREVIO AVISO",
       "productos":[
-        {"nombre":"PECHUGA SIN HUESO","precio":145.00,"visible":true,"posicion":1},
-        {"nombre":"PIERNA Y MUSLO","precio":75.00,"visible":true,"posicion":2},
-        {"nombre":"ALITAS ADOBADAS","precio":120.00,"visible":true,"posicion":3},
-        {"nombre":"POLLO ENTERO","precio":68.00,"visible":true,"posicion":4},
-        {"nombre":"PECHUGA CON HUESO","precio":95.00,"visible":true,"posicion":5}
+        {"nombre":"PECHUGA SIN HUESO","precio":145.00,"unidad":"KG","visible":true,"posicion":1},
+        {"nombre":"PIERNA Y MUSLO","precio":75.00,"unidad":"KG","visible":true,"posicion":2},
+        {"nombre":"ALITAS ADOBADAS","precio":120.00,"unidad":"KG","visible":true,"posicion":3},
+        {"nombre":"POLLO ENTERO","precio":68.00,"unidad":"KG","visible":true,"posicion":4},
+        {"nombre":"PECHUGA CON HUESO","precio":95.00,"unidad":"KG","visible":true,"posicion":5}
       ]
     },
     {
@@ -130,10 +130,10 @@
       },
       "disclaimer":"* PRECIOS SUJETOS A CAMBIO SIN PREVIO AVISO\n* BAJO PEDIDO - SUJETO A DISPONIBILIDAD",
       "productos":[
-        {"nombre":"FILETE DE HUACHINANGO","precio":250.00,"visible":true,"posicion":1},
-        {"nombre":"MOJARRA FRESCA","precio":180.00,"visible":true,"posicion":2},
-        {"nombre":"CAMARÓN JUMBO","precio":320.00,"visible":true,"posicion":3},
-        {"nombre":"PULPO FRESCO","precio":280.00,"visible":true,"posicion":4}
+        {"nombre":"FILETE DE HUACHINANGO","precio":250.00,"unidad":"KG","visible":true,"posicion":1},
+        {"nombre":"MOJARRA FRESCA","precio":180.00,"unidad":"KG","visible":true,"posicion":2},
+        {"nombre":"CAMARÓN JUMBO","precio":320.00,"unidad":"KG","visible":true,"posicion":3},
+        {"nombre":"PULPO FRESCO","precio":280.00,"unidad":"KG","visible":true,"posicion":4}
       ]
     },
     {
@@ -161,10 +161,10 @@
       },
       "disclaimer":"* PRECIOS SUJETOS A CAMBIO SIN PREVIO AVISO",
       "productos":[
-        {"nombre":"ARROZ BLANCO GRANO LARGO","precio":25.00,"visible":true,"posicion":1},
-        {"nombre":"FRIJOL NEGRO","precio":35.00,"visible":true,"posicion":2},
-        {"nombre":"LENTEJA VERDE","precio":40.00,"visible":true,"posicion":3},
-        {"nombre":"AZÚCAR REFINADA","precio":20.00,"visible":true,"posicion":4}
+        {"nombre":"ARROZ BLANCO GRANO LARGO","precio":25.00,"unidad":"KG","visible":true,"posicion":1},
+        {"nombre":"FRIJOL NEGRO","precio":35.00,"unidad":"KG","visible":true,"posicion":2},
+        {"nombre":"LENTEJA VERDE","precio":40.00,"unidad":"KG","visible":true,"posicion":3},
+        {"nombre":"AZÚCAR REFINADA","precio":20.00,"unidad":"KG","visible":true,"posicion":4}
       ]
     },
     {
@@ -192,11 +192,11 @@
       },
       "disclaimer":"* PRECIOS SUJETOS A CAMBIO SIN PREVIO AVISO\n* TODOS LOS PRODUCTOS BAJO PEDIDO",
       "productos":[
-        {"nombre":"HÍGADO FRESCO","precio":45.00,"visible":true,"posicion":1},
-        {"nombre":"RIÑONES FRESCOS","precio":55.00,"visible":true,"posicion":2},
-        {"nombre":"CORAZÓN FRESCO","precio":50.00,"visible":true,"posicion":3},
-        {"nombre":"LENGUA FRESCA","precio":120.00,"visible":true,"posicion":4},
-        {"nombre":"TUÉTANO FRESCO","precio":65.00,"visible":true,"posicion":5}
+        {"nombre":"HÍGADO FRESCO","precio":45.00,"unidad":"KG","visible":true,"posicion":1},
+        {"nombre":"RIÑONES FRESCOS","precio":55.00,"unidad":"KG","visible":true,"posicion":2},
+        {"nombre":"CORAZÓN FRESCO","precio":50.00,"unidad":"KG","visible":true,"posicion":3},
+        {"nombre":"LENGUA FRESCA","precio":120.00,"unidad":"KG","visible":true,"posicion":4},
+        {"nombre":"TUÉTANO FRESCO","precio":65.00,"unidad":"KG","visible":true,"posicion":5}
       ]
     }
   ]

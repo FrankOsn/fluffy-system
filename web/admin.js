@@ -495,39 +495,33 @@
       let y = dividerStartY;
 
       for (const it of col.items) {
-        // Name
+        // Get product unit (use product unidad, fallback to hoja unidad for compatibility)
+        const productUnidad = it.unidad || hoja.unidad || 'KG';
+        
+        // Only show product name on first line
         const nombrePx = Math.round(ptToPx(sizes.nombre));
-        const nameLines = wrapText(nombrePx, it.nombre, colW - cfg.col_padding * 2);
-        ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
-        ctx.fillStyle = textColor;
-        ctx.textAlign = 'left';
-        for (const line of nameLines) {
-          ctx.fillText(line, col.x, y);
-          y += Math.round(nombrePx * 1.2);
-        }
-        y += 12;
-
-        // Price + Unit
         const pricePx = Math.round(ptToPx(sizes.precio));
-        ctx.font = `900 ${pricePx}px "Roboto Serif", Arial, sans-serif`;
-        ctx.fillStyle = textColor;
-        ctx.textAlign = 'right';
-        const priceStr = `$${Number(it.precio).toFixed(2)}`;
-        const priceX = col.x + (colW - cfg.col_padding * 2);
-        ctx.fillText(priceStr, priceX, y);
+        const unidadPx = Math.round(ptToPx(sizes.unidad));
         
-        // Unit (if visible)
-        if (cfg.showUnidad && hoja.unidad) {
-          const unidadPx = Math.round(ptToPx(sizes.unidad));
-          ctx.font = `600 ${unidadPx}px "Roboto Serif", Arial, sans-serif`;
-          ctx.fillStyle = textColor;
-          const priceWidthBold = ctx.measureText(priceStr).width;
-          const unitStr = ` | ${hoja.unidad}`;
-          ctx.fillText(unitStr, priceX - priceWidthBold - 10, y + (pricePx - unidadPx) * 0.5);
+        ctx.fillStyle = textColor;
+        ctx.textAlign = 'left';
+        
+        // Format: nombre | unidad $precio
+        const priceStr = `$${Number(it.precio).toFixed(2)}`;
+        let lineText = it.nombre;
+        
+        if (cfg.showUnidad) {
+          lineText += ` | ${productUnidad} ${priceStr}`;
+        } else {
+          lineText += ` ${priceStr}`;
         }
         
+        // Render product line
+        ctx.font = `600 ${nombrePx}px "Roboto Serif", Arial, sans-serif`;
+        ctx.fillText(lineText, col.x, y);
+        
         ctx.textAlign = 'left';
-        y += Math.round(pricePx * 1.2) + cfg.itemSpacing;
+        y += Math.round(nombrePx * 1.4) + cfg.itemSpacing;
       }
     });
 
