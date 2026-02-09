@@ -1,0 +1,86 @@
+{
+  "meta":{
+    "fuente_url":"https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
+    "linea_div_color":"#D4AF37",
+    "rotacion_default_minutos":10,
+    "descripcion":"Todas las categorías del PDF original de Carnicería Los 44"
+  },
+  "hojas":[
+    {
+      "id":"res_cerdo_01",
+      "nombre":"Res y Cerdo",
+      "fondo":"#7B0000",
+      "texto":"#FFFDD0",
+      "mostrar_logo":true,
+      "productos":[
+        {"categoria":"RES","nombre":"ARRACHERA NAL","precio":240.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"ARRACHERA MARINADA","precio":280.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"BISTEC FRESCO","precio":220.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"RIB EYE PRIME","precio":420.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"FILETE DE RES","precio":380.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"T-BONE CORTE NACIONAL","precio":340.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"CHAMBARETE CON HUESO","precio":110.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"CERDO","nombre":"CHULETA AHUMADA","precio":95.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"CERDO","nombre":"PIERNA SIN HUESO","precio":80.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"CERDO","nombre":"COSTILLA CARGADA","precio":130.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"CERDO","nombre":"TOCINO AHUMADO","precio":180.00,"unidad":"KG","visible":true,"nota":""}
+      ]
+    },
+    {
+      "id":"pollo_01",
+      "nombre":"Pollo",
+      "fondo":"#E6A519",
+      "texto":"#2B1B00",
+      "mostrar_logo":true,
+      "productos":[
+        {"categoria":"POLLO","nombre":"PECHUGA SIN HUESO","precio":145.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"POLLO","nombre":"PIERNA Y MUSLO","precio":75.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"POLLO","nombre":"ALITAS ADOBADAS","precio":120.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"POLLO","nombre":"POLLO ENTERO","precio":68.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"POLLO","nombre":"PECHUGA CON HUESO","precio":95.00,"unidad":"KG","visible":true,"nota":""}
+      ]
+    },
+    {
+      "id":"pescados_01",
+      "nombre":"Pescados y Mariscos",
+      "fondo":"#001F5B",
+      "texto":"#FFFDD0",
+      "mostrar_logo":true,
+      "productos":[
+        {"categoria":"PESCADO","nombre":"FILETE DE HUACHINANGO","precio":250.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"PESCADO","nombre":"MOJARRA FRESCA","precio":180.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"MARISCO","nombre":"CAMARÓN JUMBO","precio":320.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"MARISCO","nombre":"PULPO FRESCO","precio":280.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"MARISCO","nombre":"OSTIONES FRESCOS","precio":200.00,"unidad":"DOCENA","visible":true,"nota":"Bajo pedido"}
+      ]
+    },
+    {
+      "id":"viveres_01",
+      "nombre":"Víveres y Semillas",
+      "fondo":"#004B23",
+      "texto":"#FFFDD0",
+      "mostrar_logo":true,
+      "productos":[
+        {"categoria":"ARROZ","nombre":"ARROZ BLANCO GRANO LARGO","precio":25.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"SEMILLAS","nombre":"FRIJOL NEGRO","precio":35.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"SEMILLAS","nombre":"LENTEJA VERDE","precio":40.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"HUEVO","nombre":"HUEVO BLANCO FRESCO","precio":3.50,"unidad":"PIEZA","visible":true,"nota":""},
+        {"categoria":"AZÚCAR","nombre":"AZÚCAR REFINADA","precio":20.00,"unidad":"KG","visible":true,"nota":""}
+      ]
+    },
+    {
+      "id":"visceras_01",
+      "nombre":"Vísceras",
+      "fondo":"#8D918D",
+      "texto":"#FFFFFF",
+      "mostrar_logo":true,
+      "productos":[
+        {"categoria":"VÍSCERAS","nombre":"HÍGADO FRESCO","precio":45.00,"unidad":"KG","visible":true,"nota":"Bajo pedido"},
+        {"categoria":"VÍSCERAS","nombre":"RIÑONES FRESCOS","precio":55.00,"unidad":"KG","visible":true,"nota":"Bajo pedido"},
+        {"categoria":"VÍSCERAS","nombre":"CORAZÓN FRESCO","precio":50.00,"unidad":"KG","visible":true,"nota":"Bajo pedido"},
+        {"categoria":"VÍSCERAS","nombre":"LENGUA FRESCA","precio":120.00,"unidad":"KG","visible":true,"nota":"Bajo pedido"},
+        {"categoria":"VÍSCERAS","nombre":"TUÉTANO FRESCO","precio":65.00,"unidad":"KG","visible":true,"nota":"Bajo pedido"}
+      ]
+    }
+  ]
+}

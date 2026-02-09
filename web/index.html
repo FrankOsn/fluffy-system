@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Generador de Menús Dinámicos — Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <h2>Controls</h2>
+      <label>Archivo JSON</label>
+      <input id="fileInput" type="file" accept="application/json" />
+      <label>Google Fonts CSS (opcional)</label>
+      <input id="fontCss" placeholder="https://fonts.googleapis.com/css2?family=..." value="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" />
+      <label>O cargar .ttf/.woff/.woff2 local</label>
+      <input id="fontFile" type="file" accept=".ttf,.woff,.woff2" />
+      <label>Intervalo rotación (s)</label>
+      <input id="rotInterval" type="number" value="600" min="5" />
+      <div class="buttons">
+        <button id="startRotation">Iniciar rotación</button>
+        <button id="stopRotation">Parar rotación</button>
+        <button id="exportPNG">Exportar PNG</button>
+        <button id="exportPDF">Exportar PDF</button>
+      </div>
+    </aside>
+
+    <main class="preview">
+      <canvas id="menuCanvas" width="1280" height="720"></canvas>
+      <div class="meta">Fuente: <span id="metaFont">system</span> — Hoja <span id="metaPage">0</span>/<span id="metaTotal">0</span></div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

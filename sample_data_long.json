@@ -1,0 +1,23 @@
+{
+  "meta":{
+    "fuente_url":"https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
+    "linea_div_color":"#D4AF37",
+    "rotacion_default_minutos":10
+  },
+  "hojas":[
+    {
+      "id":"res_cerdo_long",
+      "nombre":"Res y Cerdo - Nombres Largos",
+      "fondo":"#7B0000",
+      "texto":"#FFFDD0",
+      "mostrar_logo":true,
+      "productos":[
+        {"categoria":"RES","nombre":"ARrachERA MARINADA con Salsa Especial de la Casa y Ajo Tostado Extra Largo Nombre de Prueba","precio":160.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"RIB EYE PRIME CORTE SELECTO PREMIUM CON MADURACIÓN EXTENDIDA Y ESPECIAS","precio":420.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"CERDO","nombre":"CHULETA AHUMADA AL ESTILO CASERO CON ADOBO DE LA ABUELA EXCEPCIONAL","precio":95.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"CERDO","nombre":"PIERNA SIN HUESO EXTRA SUAVE MARINADA EN CÍTRICOS Y HIERBAS PARA PRUEBA LARGO","precio":80.00,"unidad":"KG","visible":true,"nota":""},
+        {"categoria":"RES","nombre":"FILETE DE RES CLASSIC TENDERLOIN PREMIUM SUPER LARGO NOMBRE DE TESTEO","precio":380.00,"unidad":"KG","visible":true,"nota":""}
+      ]
+    }
+  ]
+}

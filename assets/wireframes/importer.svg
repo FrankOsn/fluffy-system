@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <text x="30" y="40" font-family="Arial" font-size="20" fill="#222">Importador — Drag & Drop</text>
+  <rect x="30" y="70" width="440" height="200" fill="#fff" stroke="#bbb" stroke-dasharray="6,4"/>
+  <text x="70" y="160" font-family="Arial" font-size="16" fill="#999">Suelta aquí tu archivo JSON</text>
+  <rect x="500" y="70" width="460" height="200" fill="#fff" stroke="#ddd"/>
+  <text x="520" y="100" font-family="Arial" font-size="14" fill="#333">Preview de datos</text>
+  <rect x="520" y="120" width="420" height="120" fill="#f7f7f7"/>
+  <text x="540" y="150" font-family="Arial" font-size="12" fill="#444">Categoria | Producto | Precio | Unidad</text>
+  <text x="540" y="170" font-family="Arial" font-size="12" fill="#444">RES | ARRRACHERA | 160.00 | KG</text>
+  <rect x="30" y="300" width="930" height="260" fill="#fff" stroke="#eee"/>
+  <text x="50" y="330" font-family="Arial" font-size="16" fill="#222">Mapping de columnas</text>
+  <text x="50" y="360" font-family="Arial" font-size="13" fill="#666">CSV future: mapear columna -> campo</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="30" y="40" font-family="Arial" font-size="20" fill="#222">Style Builder</text>
+  <text x="30" y="80" font-family="Arial" font-size="14" fill="#444">Hoja: Res y Cerdo - Rojo</text>
+  <rect x="30" y="100" width="420" height="220" fill="#f7f7f7" stroke="#e0e0e0"/>
+  <text x="50" y="130" font-family="Arial" font-size="13" fill="#111">Fondo (HEX)</text>
+  <rect x="140" y="118" width="200" height="28" fill="#7B0000" stroke="#ccc"/>
+  <text x="50" y="170" font-family="Arial" font-size="13" fill="#111">Texto (HEX)</text>
+  <rect x="140" y="158" width="200" height="28" fill="#FFFDD0" stroke="#ccc"/>
+  <text x="50" y="210" font-family="Arial" font-size="13" fill="#111">Fuente</text>
+  <rect x="140" y="198" width="320" height="28" fill="#fff" stroke="#ccc"/>
+  <text x="50" y="250" font-family="Arial" font-size="13" fill="#111">Tamaños (pt): Categoria / Nombre / Precio</text>
+  <text x="60" y="280" font-family="Arial" font-size="12" fill="#333">120 / 85 / 100</text>
+  <rect x="500" y="100" width="440" height="520" fill="#f7f7f7" stroke="#ddd"/>
+  <text x="520" y="130" font-family="Arial" font-size="16" fill="#222">Preview rápido</text>
+  <rect x="520" y="150" width="400" height="120" fill="#7B0000"/>
+  <text x="540" y="190" font-family="Arial" font-size="28" fill="#FFFDD0">RES / NOVILLO</text>
+  <text x="540" y="230" font-family="Arial" font-size="20" fill="#FFFDD0">Arrachera Marinada .......... $160.00 KG</text>
+</svg>
