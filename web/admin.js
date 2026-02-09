@@ -20,6 +20,7 @@
   const showTituloInput = document.getElementById('showTitulo');
   const showUnidadInput = document.getElementById('showUnidad');
   const disclaimerInput = document.getElementById('disclaimer');
+  const maxProductosInput = document.getElementById('maxProductos');
   const bgColorInput = document.getElementById('bgcolor');
   const bgColorPicker = document.getElementById('bgcolorPicker');
   const textColorInput = document.getElementById('textcolor');
@@ -301,6 +302,7 @@
       showTitulo: showTituloInput.checked,
       showUnidad: showUnidadInput.checked,
       disclaimer: disclaimerInput.value || '',
+      maxProductos: parseInt(maxProductosInput.value) || 10,
       bgcolor: bgColorInput.value || '#7B0000',
       textcolor: textColorInput.value || '#FFFDD0',
       dividercolor: dividerColorInput.value || '#D4AF37',
@@ -338,6 +340,7 @@
       showTituloInput.checked = style.showTitulo !== false;
       showUnidadInput.checked = style.showUnidad !== false;
       disclaimerInput.value = style.disclaimer || '';
+      maxProductosInput.value = style.maxProductos || 10;
       bgColorInput.value = style.bgcolor;
       bgColorPicker.value = style.bgcolor;
       textColorInput.value = style.textcolor;
@@ -359,6 +362,7 @@
       showTituloInput.checked = catConfig.visible !== false;
       showUnidadInput.checked = unidadConfig.visible !== false;
       disclaimerInput.value = hoja.disclaimer || '';
+      maxProductosInput.value = 10;
       bgColorInput.value = hoja.fondo || '#7B0000';
       bgColorPicker.value = hoja.fondo || '#7B0000';
       textColorInput.value = hoja.texto || '#FFFDD0';
@@ -449,18 +453,15 @@
     ctx.fillStyle = dividerColorInput.value || '#D4AF37';
     ctx.fillRect(dividerX - 8, dividerStartY, 16, canvas.height - dividerStartY - cfg.margin - disclaimerHeight);
 
-    // Prep items
-    const items = hoja.productos.filter(p => p.visible !== false).map(p => ({ ...p }));
+    // Prep items - filter by max products and sort by position
+    const maxProds = parseInt(maxProductosInput.value) || 10;
+    const allItems = hoja.productos.filter(p => p.visible !== false).sort((a, b) => (a.posicion || 999) - (b.posicion || 999));
+    const items = allItems.slice(0, maxProds).map(p => ({ ...p }));
 
-    const targetSizes = {
+    const sizes = {
       nombre: cfg.nombre_pt,
       precio: cfg.precio_pt,
       unidad: cfg.unidad_pt
-    };
-    const minSizes = {
-      nombre: Math.max(1, Math.round(targetSizes.nombre * 0.55)),
-      precio: Math.round(targetSizes.precio * 0.75),
-      unidad: Math.round(targetSizes.unidad * 0.75)
     };
 
     function ptToPx(pt) { return pt * 1.333; }
@@ -483,51 +484,17 @@
       return lines;
     }
 
-    function estimateHeights(sizes) {
-      const colWidthPx = colW - cfg.col_padding * 2;
-      items.forEach(it => {
-        const nombrePx = ptToPx(sizes.nombre);
-        const nameLines = Math.max(1, wrapText(nombrePx, it.nombre, colWidthPx).length);
-        const lineH = Math.round(nombrePx * 1.2);
-        const priceH = Math.round(ptToPx(sizes.precio) * 1.2);
-        it.estHeight = nameLines * lineH + 12 + priceH + cfg.itemSpacing;
-      });
-    }
-
-    // Distribute
-    const cols = [{ items: [], height: 0 }, { items: [], height: 0 }];
-    let sizes = { ...targetSizes };
-    const maxContentHeight = canvas.height - dividerStartY - cfg.margin - disclaimerHeight;
-
-    function distribute() {
-      cols[0].items = []; cols[0].height = 0;
-      cols[1].items = []; cols[1].height = 0;
-      items.sort((a, b) => b.estHeight - a.estHeight);
-      for (const it of items) {
-        cols.sort((a, b) => a.height - b.height);
-        cols[0].items.push(it);
-        cols[0].height += it.estHeight;
-      }
-    }
-
-    estimateHeights(sizes);
-    distribute();
-    let fits = Math.max(cols[0].height, cols[1].height) <= maxContentHeight;
-    let iter = 0;
-    while (!fits && sizes.nombre > minSizes.nombre && iter < 15) {
-      sizes.nombre = Math.max(minSizes.nombre, Math.round(sizes.nombre * 0.82));
-      estimateHeights(sizes);
-      distribute();
-      fits = Math.max(cols[0].height, cols[1].height) <= maxContentHeight;
-      iter++;
-    }
+    // Organize items by column: 1-5 left, 6-10 right
+    const cols = [
+      { items: items.filter(it => (it.posicion || 1) <= 5), x: leftX },
+      { items: items.filter(it => (it.posicion || 1) > 5), x: rightX }
+    ];
 
     // Render columns
-    [{x: leftX, idx: 0}, {x: rightX, idx: 1}].forEach(col => {
+    cols.forEach(col => {
       let y = dividerStartY;
-      const colData = cols[col.idx];
 
-      for (const it of colData.items) {
+      for (const it of col.items) {
         // Name
         const nombrePx = Math.round(ptToPx(sizes.nombre));
         const nameLines = wrapText(nombrePx, it.nombre, colW - cfg.col_padding * 2);
@@ -554,10 +521,7 @@
           const unidadPx = Math.round(ptToPx(sizes.unidad));
           ctx.font = `600 ${unidadPx}px "Roboto Serif", Arial, sans-serif`;
           ctx.fillStyle = textColor;
-          const priceWidth = ctx.measureText(priceStr).width;
-          ctx.font = `900 ${pricePx}px "Roboto Serif", Arial, sans-serif`;
           const priceWidthBold = ctx.measureText(priceStr).width;
-          ctx.font = `600 ${unidadPx}px "Roboto Serif", Arial, sans-serif`;
           const unitStr = ` | ${hoja.unidad}`;
           ctx.fillText(unitStr, priceX - priceWidthBold - 10, y + (pricePx - unidadPx) * 0.5);
         }
@@ -612,7 +576,7 @@
   }
 
   // Input change listeners for live update
-  [titulo_ptInput, nombre_ptInput, precio_ptInput, unidad_ptInput, showTituloInput, showUnidadInput, disclaimerInput, bgColorInput, textColorInput, dividerColorInput, itemSpacingInput, marginInput].forEach(input => {
+  [titulo_ptInput, nombre_ptInput, precio_ptInput, unidad_ptInput, showTituloInput, showUnidadInput, disclaimerInput, maxProductosInput, bgColorInput, textColorInput, dividerColorInput, itemSpacingInput, marginInput].forEach(input => {
     input.addEventListener('change', () => {
       saveSheetStyle();
       renderSheet(currentIndex);
