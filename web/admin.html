@@ -100,6 +100,9 @@
           💾 Se guarda en navegador (no en servidor)
         </div>
       </section>
+      
+      <!-- Hidden inputs for layout configuration -->
+      <input id="layoutMode" type="hidden" value="dos-columnas" />
 
       <!-- Configuración de Colores -->
       <section class="panel-section">
@@ -136,14 +139,24 @@
         <textarea id="disclaimer" rows="3" placeholder="* PRECIOS SUJETOS A CAMBIO\n* PRODUCTOS BAJO PEDIDO" style="width: 100%; font-size: 12px; font-family: monospace;"></textarea>
       </section>
 
-      <!-- Máximo de Productos -->
+      <!-- Máximo de Productos y Layout -->
       <section class="panel-section">
         <h3>⚙️ Configuración Avanzada</h3>
-        <div>
+        <div style="margin-bottom: 15px;">
           <label>Máximo de Productos por Hoja</label>
-          <input id="maxProductos" type="number" value="10" min="1" max="10" />
+          <input id="maxProductos" type="number" value="10" min="1" max="50" />
           <div style="margin-top: 8px; font-size: 12px; color: #666;">
-            📌 1-5: Columna izquierda | 6-10: Columna derecha
+            📌 Cantidad máxima de productos a mostrar (según layout)
+          </div>
+        </div>
+        <div>
+          <label for="layoutMode">Modo de Layout</label>
+          <select id="layoutMode" style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="dos-columnas">Dos Columnas (1-5 izq, 6-10 der)</option>
+            <option value="lista-unica">Lista Única (todos en una columna)</option>
+          </select>
+          <div style="margin-top: 8px; font-size: 12px; color: #666;">
+            📋 Dos Columnas: distribuye productos | Lista Única: todos lineales
           </div>
         </div>
       </section>

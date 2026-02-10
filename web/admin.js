@@ -14,6 +14,7 @@
   const fontFileInput = document.getElementById('fontFile');
   const logoFileInput = document.getElementById('logoFile');
   const logoSizeInput = document.getElementById('logoSizeInput');
+  const layoutModeInput = document.getElementById('layoutMode');
   const titulo_ptInput = document.getElementById('titulo_pt');
   const nombre_ptInput = document.getElementById('nombre_pt');
   const precio_ptInput = document.getElementById('precio_pt');
@@ -86,6 +87,14 @@
   // Logo size input handler
   if (logoSizeInput) {
     logoSizeInput.addEventListener('change', function() {
+      saveSheetStyle();
+      renderSheet(currentIndex);
+    });
+  }
+
+  // Layout mode input handler
+  if (layoutModeInput) {
+    layoutModeInput.addEventListener('change', function() {
       saveSheetStyle();
       renderSheet(currentIndex);
     });
@@ -319,7 +328,8 @@
       itemSpacing: parseInt(itemSpacingInput.value) || 32,
       margin: parseInt(marginInput.value) || 50,
       orientacion: orientation,
-      logoSize: parseInt(logoSizeInput.value) || 80
+      logoSize: parseInt(logoSizeInput.value) || 80,
+      layoutMode: layoutModeInput.value || 'dos-columnas'
     };
     
     // Also save orientation to hoja object
@@ -374,6 +384,7 @@
       itemSpacingInput.value = style.itemSpacing;
       marginInput.value = style.margin;
       logoSizeInput.value = style.logoSize || 80;
+      layoutModeInput.value = style.layoutMode || 'dos-columnas';
       console.log('Sheet style loaded for:', sheetId);
     } else {
       // Default values from hoja
@@ -389,6 +400,7 @@
       }
       
       logoSizeInput.value = 80;
+      layoutModeInput.value = 'dos-columnas';
       
       titulo_ptInput.value = catConfig.size || 140;
       nombre_ptInput.value = 85;
@@ -484,9 +496,12 @@
     const dividerStartY = currentY;
     const disclaimerHeight = cfg.disclaimer ? 80 : 40;
 
-    // Divider
-    ctx.fillStyle = dividerColorInput.value || '#D4AF37';
-    ctx.fillRect(dividerX - 8, dividerStartY, 16, canvas.height - dividerStartY - cfg.margin - disclaimerHeight);
+    // Divider (only in two-column mode)
+    const layoutMode = cfg.layoutMode || 'dos-columnas';
+    if (layoutMode === 'dos-columnas') {
+      ctx.fillStyle = dividerColorInput.value || '#D4AF37';
+      ctx.fillRect(dividerX - 8, dividerStartY, 16, canvas.height - dividerStartY - cfg.margin - disclaimerHeight);
+    }
 
     // Prep items - filter by max products and sort by position
     const maxProds = parseInt(maxProductosInput.value) || 10;
@@ -519,13 +534,24 @@
       return lines;
     }
 
-    // Organize items by column: 1-5 left, 6-10 right
-    const cols = [
-      { items: items.filter(it => (it.posicion || 1) <= 5), x: leftX },
-      { items: items.filter(it => (it.posicion || 1) > 5), x: rightX }
-    ];
+    // Organize items based on layout mode
+    const layoutMode = cfg.layoutMode || 'dos-columnas';
+    let cols = [];
+    
+    if (layoutMode === 'dos-columnas') {
+      // Two columns: positions 1-5 left, 6-10 right
+      cols = [
+        { items: items.filter(it => (it.posicion || 1) <= 5), x: leftX },
+        { items: items.filter(it => (it.posicion || 1) > 5), x: rightX }
+      ];
+    } else {
+      // Single list: all items in one column
+      cols = [
+        { items: items, x: cfg.col_padding + 30 }
+      ];
+    }
 
-    // Render columns
+    // Render items based on layout
     cols.forEach(col => {
       let y = dividerStartY;
 
