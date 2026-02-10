@@ -21,6 +21,7 @@
   const unidad_ptInput = document.getElementById('unidad_pt');
   const showTituloInput = document.getElementById('showTitulo');
   const showUnidadInput = document.getElementById('showUnidad');
+  const showDividerInput = document.getElementById('showDivider');
   const disclaimerInput = document.getElementById('disclaimer');
   const maxProductosInput = document.getElementById('maxProductos');
   const bgColorInput = document.getElementById('bgcolor');
@@ -320,6 +321,7 @@
       unidad_pt: parseInt(unidad_ptInput.value) || 65,
       showTitulo: showTituloInput.checked,
       showUnidad: showUnidadInput.checked,
+      showDivider: showDividerInput.checked,
       disclaimer: disclaimerInput.value || '',
       maxProductos: parseInt(maxProductosInput.value) || 10,
       bgcolor: bgColorInput.value || '#7B0000',
@@ -373,6 +375,7 @@
       unidad_ptInput.value = style.unidad_pt;
       showTituloInput.checked = style.showTitulo !== false;
       showUnidadInput.checked = style.showUnidad !== false;
+      showDividerInput.checked = style.showDivider !== false;
       disclaimerInput.value = style.disclaimer || '';
       maxProductosInput.value = style.maxProductos || 10;
       bgColorInput.value = style.bgcolor;
@@ -408,6 +411,7 @@
       unidad_ptInput.value = unidadConfig.size || 65;
       showTituloInput.checked = catConfig.visible !== false;
       showUnidadInput.checked = unidadConfig.visible !== false;
+      showDividerInput.checked = true;
       disclaimerInput.value = hoja.disclaimer || '';
       maxProductosInput.value = 10;
       bgColorInput.value = hoja.fondo || '#7B0000';
@@ -496,9 +500,9 @@
     const dividerStartY = currentY;
     const disclaimerHeight = cfg.disclaimer ? 80 : 40;
 
-    // Divider (only in two-column mode)
+    // Divider (only in two-column mode and if showDivider is true)
     const layoutMode = cfg.layoutMode || 'dos-columnas';
-    if (layoutMode === 'dos-columnas') {
+    if (layoutMode === 'dos-columnas' && cfg.showDivider !== false) {
       ctx.fillStyle = dividerColorInput.value || '#D4AF37';
       ctx.fillRect(dividerX - 8, dividerStartY, 16, canvas.height - dividerStartY - cfg.margin - disclaimerHeight);
     }
@@ -546,7 +550,7 @@
     } else {
       // Single list: all items in one column
       cols = [
-        { items: items, x: cfg.col_padding + 30 }
+        { items: items, x: leftX }
       ];
     }
 
@@ -660,7 +664,7 @@
   }
 
   // Input change listeners for live update
-  [titulo_ptInput, nombre_ptInput, precio_ptInput, unidad_ptInput, showTituloInput, showUnidadInput, disclaimerInput, maxProductosInput, bgColorInput, textColorInput, dividerColorInput, itemSpacingInput, marginInput].forEach(input => {
+  [titulo_ptInput, nombre_ptInput, precio_ptInput, unidad_ptInput, showTituloInput, showUnidadInput, showDividerInput, disclaimerInput, maxProductosInput, bgColorInput, textColorInput, dividerColorInput, itemSpacingInput, marginInput].forEach(input => {
     input.addEventListener('change', () => {
       saveSheetStyle();
       renderSheet(currentIndex);
