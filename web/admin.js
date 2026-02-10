@@ -121,14 +121,14 @@
       if (sheetOrientation === 'landscape') {
         return { width: 1280, height: 720 }; // 16:9
       } else {
-        return { width: 720, height: 1280 }; // 9:16
+        return { width: 720, height: 1440 }; // 9:16 con espacio adicional
       }
     }
     // Fallback to global orientation
     if (orientation === 'landscape') {
       return { width: 1280, height: 720 }; // 16:9
     } else {
-      return { width: 720, height: 1280 }; // 9:16
+      return { width: 720, height: 1440 }; // 9:16 con espacio adicional
     }
   }
 
@@ -347,7 +347,12 @@
     // Also save orientation to hoja object
     hoja.orientacion = orientation;
     
-    console.log('Sheet style saved for:', sheetId);
+    console.log('=== GUARDANDO ESTILOS ===');
+    console.log('Hoja ID:', sheetId);
+    console.log('Layout Mode:', sheetStyles[sheetId].layoutMode);
+    console.log('Show Divider:', sheetStyles[sheetId].showDivider);
+    console.log('Max Productos:', sheetStyles[sheetId].maxProductos);
+    console.log('Configuración completa:', sheetStyles[sheetId]);
   }
 
   function loadSheetStyle() {
@@ -482,9 +487,20 @@
       col_padding: 50,
       showTitulo: showTituloInput.checked,
       showUnidad: showUnidadInput.checked,
-      disclaimer: disclaimerInput.value || ''
+      disclaimer: disclaimerInput.value || '',
+      showDivider: showDividerInput.checked,
+      maxProductos: parseInt(maxProductosInput.value) || 10,
+      layoutMode: layoutModeInput.value || 'dos-columnas',
+      logoSize: parseInt(logoSizeInput.value) || 80
     };
     
+    console.log('=== RENDERIZANDO HOJA ===');
+    console.log('Hoja ID:', hoja.id);
+    console.log('Config valores:', {
+      layoutMode: cfg.layoutMode,
+      showDivider: cfg.showDivider,
+      maxProductos: cfg.maxProductos
+    });
     const textColor = textColorInput.value || '#FFFDD0';
     let currentY = cfg.margin;
     
@@ -501,17 +517,27 @@
       currentY += 40;
     }
 
+    const layoutMode = cfg.layoutMode || 'dos-columnas';
     const usableW = canvas.width - cfg.margin * 2;
-    const colW = (usableW - cfg.colGap) / 2;
-    const leftX = cfg.margin + cfg.col_padding;
-    const rightX = cfg.margin + colW + cfg.colGap + cfg.col_padding;
-    const dividerX = cfg.margin + colW + cfg.colGap / 2;
+    let colW, leftX, rightX, dividerX;
+    
+    if (layoutMode === 'dos-columnas') {
+      colW = (usableW - cfg.colGap) / 2;
+      leftX = cfg.margin + cfg.col_padding;
+      rightX = cfg.margin + colW + cfg.colGap + cfg.col_padding;
+      dividerX = cfg.margin + colW + cfg.colGap / 2;
+    } else {
+      // Single column mode: use full width
+      colW = usableW;
+      leftX = cfg.margin + cfg.col_padding;
+      rightX = leftX; // Not used in single column
+      dividerX = -1; // Not used
+    }
     
     const dividerStartY = currentY;
     const disclaimerHeight = cfg.disclaimer ? 80 : 40;
 
     // Divider (only in two-column mode and if showDivider is true)
-    const layoutMode = cfg.layoutMode || 'dos-columnas';
     if (layoutMode === 'dos-columnas' && cfg.showDivider !== false) {
       ctx.fillStyle = dividerColorInput.value || '#D4AF37';
       ctx.fillRect(dividerX - 8, dividerStartY, 16, canvas.height - dividerStartY - cfg.margin - disclaimerHeight);
@@ -670,7 +696,7 @@
     }
 
     // Update info
-    previewInfo.textContent = `${hoja.nombre} (${orientation === 'landscape' ? '1280×720' : '720×1280'}) - ${items.length} items`;
+    previewInfo.textContent = `${hoja.nombre} (${orientation === 'landscape' ? '1280×720' : '720×1440'}) - ${items.length} items`;
   }
 
   // Input change listeners for live update
