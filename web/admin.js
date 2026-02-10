@@ -535,7 +535,6 @@
     }
 
     // Organize items based on layout mode
-    const layoutMode = cfg.layoutMode || 'dos-columnas';
     let cols = [];
     
     if (layoutMode === 'dos-columnas') {
