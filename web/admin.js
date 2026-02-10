@@ -43,6 +43,7 @@
   const saveConfigBtn = document.getElementById('saveConfig');
   const loadConfigBtn = document.getElementById('loadConfig');
   const configFile = document.getElementById('configFile');
+  const btnRefresh = document.getElementById('btnRefresh');
 
   let data = null;
   let currentIndex = 0;
@@ -98,6 +99,15 @@
     layoutModeInput.addEventListener('change', function() {
       saveSheetStyle();
       renderSheet(currentIndex);
+    });
+  }
+
+  // Refresh button
+  if (btnRefresh) {
+    btnRefresh.addEventListener('click', function() {
+      saveSheetStyle();
+      renderSheet(currentIndex);
+      console.log('Vista actualizada');
     });
   }
 
